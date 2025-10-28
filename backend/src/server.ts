@@ -46,7 +46,13 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', message: 'NutriDiário BR API is running!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📊 API disponível em http://localhost:${PORT}`);
-});
+// Exportar para Vercel serverless
+export default app;
+
+// Apenas inicia o servidor se não estiver no ambiente Vercel
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`📊 API disponível em http://localhost:${PORT}`);
+  });
+}
