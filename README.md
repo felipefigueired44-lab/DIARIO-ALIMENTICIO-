@@ -65,6 +65,18 @@ npm run dev
 
 Este aplicativo pode ser instalado no seu celular como um app nativo!
 
+## ☁️ Deploy na Vercel
+
+### Deploy Rápido (5 minutos)
+
+1. **Crie um banco PostgreSQL gratuito:** [Neon.tech](https://neon.tech) ou [Supabase](https://supabase.com)
+2. **Deploy na Vercel:** Importe o repositório e configure as variáveis de ambiente
+3. **Pronto!** Seu app estará online
+
+📚 Guia completo: [VERCEL-QUICKSTART.md](./VERCEL-QUICKSTART.md)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
 ## 🤝 Contribuindo
 
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues e pull requests.
