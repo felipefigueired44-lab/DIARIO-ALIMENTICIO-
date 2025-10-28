@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile       Profile?
+  meals         Meal[]
+  waterIntake   WaterIntake[]
+  weightRecords WeightRecord[]
+}
+
+model Profile {
+  id              String   @id @default(uuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gender          String   // masculino, feminino, outro
+  birthDate       DateTime
+  height          Float    // em cm
+  currentWeight   Float    // em kg
+  targetWeight    Float?   // em kg
+  activityLevel   String   // sedentario, leve, moderado, intenso, muito_intenso
+  goal            String   // perder_peso, manter_peso, ganhar_peso, ganhar_massa
+
+  dailyCalories   Int      // meta diária de calorias
+  dailyProtein    Float    // meta diária de proteína (g)
+  dailyCarbs      Float    // meta diária de carboidratos (g)
+  dailyFat        Float    // meta diária de gordura (g)
+  dailyWater      Float    @default(2000) // meta diária de água (ml)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Food {
+  id          String   @id @default(uuid())
+  name        String
+  brand       String?
+  category    String   // frutas, vegetais, proteinas, graos, laticinios, bebidas, etc
+
+  // Valores nutricionais por 100g/100ml
+  calories    Float
+  protein     Float
+  carbs       Float
+  fat         Float
+  fiber       Float?
+  sodium      Float?
+  sugar       Float?
+
+  servingSize Float    @default(100) // tamanho padrão da porção em g/ml
+  servingUnit String   @default("g") // g, ml, unidade, colher, xícara, etc
+
+  isBrazilian Boolean  @default(false) // alimentos típicos brasileiros
+  isVerified  Boolean  @default(false) // alimentos verificados pela equipe
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  mealFoods   MealFood[]
+}
+
+model Meal {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date      DateTime
+  type      String   // cafe_manha, lanche_manha, almoco, lanche_tarde, jantar, ceia
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  foods     MealFood[]
+}
+
+model MealFood {
+  id        String   @id @default(uuid())
+  mealId    String
+  meal      Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  foodId    String
+  food      Food     @relation(fields: [foodId], references: [id])
+
+  quantity  Float    // quantidade consumida
+  unit      String   // g, ml, unidade, etc
+
+  createdAt DateTime @default(now())
+}
+
+model WaterIntake {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date      DateTime
+  amount    Float    // em ml
+
+  createdAt DateTime @default(now())
+}
+
+model WeightRecord {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  date      DateTime
+  weight    Float    // em kg
+  notes     String?
+
+  createdAt DateTime @default(now())
+}
