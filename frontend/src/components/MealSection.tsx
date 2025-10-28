@@ -12,7 +12,6 @@ interface MealSectionProps {
 }
 
 export default function MealSection({ type, label, meal, date, onUpdate }: MealSectionProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [showFoodSearch, setShowFoodSearch] = useState(false);
   const [loading, setLoading] = useState(false);
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
 import { mealAPI, statsAPI, waterAPI } from '../lib/api';
 import type { Meal, DailyStats } from '../types';
 import MacroCircle from '../components/MacroCircle';

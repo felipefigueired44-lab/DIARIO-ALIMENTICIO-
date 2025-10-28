@@ -11,11 +11,16 @@ export default function Profile() {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    currentWeight: string;
+    targetWeight: string;
+    activityLevel: ProfileType['activityLevel'];
+    goal: ProfileType['goal'];
+  }>({
     currentWeight: '',
     targetWeight: '',
-    activityLevel: 'moderado' as const,
-    goal: 'manter_peso' as const,
+    activityLevel: 'moderado',
+    goal: 'manter_peso',
   });
 
   useEffect(() => {
