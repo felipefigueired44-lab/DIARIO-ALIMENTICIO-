@@ -11,17 +11,27 @@ Refused to load the stylesheet because it violates the following Content Securit
 
 **Causa:**
 - Extensões do navegador (Google Translate, tradutores automáticos)
-- Configurações de CSP muito restritivas
+- Configurações de CSP muito restritivas no navegador ou CDN
 
 **Soluções:**
 
-#### Solução 1: Desabilitar Tradução Automática
-1. No Chrome/Edge: Clique com botão direito → Traduzir → Nunca traduzir este site
-2. Desabilite extensões de tradução temporariamente
-3. Recarregue a página
+#### Solução 1: Desabilitar Tradução Automática (Mais Comum)
+O erro geralmente ocorre por causa de extensões de tradução do navegador:
 
-#### Solução 2: Usar Modo Desenvolvimento (Recomendado)
-O Vite já está configurado para desabilitar CSP em desenvolvimento:
+1. **Chrome/Edge:**
+   - Clique com botão direito → Traduzir → "Nunca traduzir este site"
+   - Ou desabilite a tradução automática: Settings → Languages → Desabilitar "Offer to translate"
+
+2. **Firefox:**
+   - Vá em about:preferences#general
+   - Em "Language", desabilite ofertas de tradução
+
+3. **Desabilite extensões de tradução temporariamente**
+
+4. **Recarregue a página** (Ctrl+Shift+R / Cmd+Shift+R)
+
+#### Solução 2: Usar Modo Desenvolvimento
+Se o erro acontecer em desenvolvimento local, use:
 
 ```bash
 npm run dev
@@ -29,9 +39,25 @@ npm run dev
 
 Acesse: http://localhost:5173
 
-#### Solução 3: Configurar Exceções no Navegador
-- Chrome: chrome://settings/content/javascript
-- Firefox: about:config → Desabilitar CSP temporariamente
+O Vite não aplica CSP restritivo em desenvolvimento.
+
+#### Solução 3: Configuração de Segurança (Produção)
+O projeto já está configurado com headers de segurança apropriados no `vercel.json`:
+
+```json
+"Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ..."
+```
+
+Se você modificou a configuração e o app não funciona, verifique:
+- A CSP permite recursos necessários (scripts, styles, imagens)
+- O domínio da API está em `connect-src`
+- Fontes externas estão em `font-src` e `style-src`
+
+#### Nota sobre Segurança
+⚠️ A configuração atual usa `'unsafe-inline'` e `'unsafe-eval'` para compatibilidade com React/Vite. Para produção de alta segurança, considere:
+- Usar nonces para scripts inline
+- Remover `'unsafe-eval'` se possível
+- Implementar CSP mais restritivo após análise dos recursos necessários
 
 ---
 
