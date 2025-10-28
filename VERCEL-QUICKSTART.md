@@ -1,5 +1,7 @@
 # 🚀 Deploy Rápido na Vercel
 
+> ⚠️ **Nota Importante**: Este projeto usa um monorepo. O frontend e backend são implantados juntos em um único deploy!
+
 ## Opção Mais Fácil: Deploy com 1 Clique
 
 ### 1. Crie um Banco PostgreSQL Gratuito
@@ -18,57 +20,47 @@ Escolha uma opção:
 3. Vá em Settings > Database > Connection String
 4. Copie a connection string
 
-### 2. Deploy na Vercel
+### 2. Deploy na Vercel (Frontend + Backend Juntos)
 
-#### Backend:
+1. **Acesse:** https://vercel.com
+2. **Login/Signup** com sua conta GitHub
+3. **Clique em "Add New Project"**
+4. **Importe seu repositório:** `felipefigueired44-lab/DIARIO-ALIMENTICIO-`
+5. **Configure o Projeto:**
+   - **Framework Preset:** Detectará automaticamente (deixe em "Other")
+   - **Root Directory:** Deixe vazio (usa a raiz do projeto)
+   - ✅ O arquivo `vercel.json` já está configurado para fazer deploy de ambos
 
-1. Acesse: https://vercel.com
-2. Clique em "Add New Project"
-3. Importe seu repositório GitHub
-4. Configure:
-   - **Root Directory:** `backend`
-   - **Framework Preset:** Other
-
-5. Adicione Variáveis de Ambiente:
+6. **Adicione Variáveis de Ambiente:**
    ```
-   DATABASE_URL=sua_connection_string_aqui
-   JWT_SECRET=qualquer_texto_longo_e_aleatorio
+   DATABASE_URL=sua_connection_string_do_neon_ou_supabase
+   JWT_SECRET=minha_chave_super_secreta_e_aleatoria_123456789
    NODE_ENV=production
    ```
 
-6. Clique em "Deploy"
-7. Copie a URL do backend (ex: `https://seu-backend.vercel.app`)
+7. **Clique em "Deploy"** e aguarde (2-3 minutos)
 
-#### Configurar Banco:
+### 3. Configure o Banco de Dados
 
-Depois que o backend fizer deploy, execute localmente:
+Após o deploy inicial, execute localmente para criar as tabelas:
 
 ```bash
+# No seu computador
 cd backend
-DATABASE_URL="sua_connection_string" npx prisma migrate deploy
-DATABASE_URL="sua_connection_string" npm run seed
+DATABASE_URL="sua_connection_string_aqui" npx prisma migrate deploy
+DATABASE_URL="sua_connection_string_aqui" npm run seed
 ```
 
-#### Frontend:
+### 4. Pronto! 🎉
 
-1. Na Vercel, crie outro projeto
-2. Importe o mesmo repositório
-3. Configure:
-   - **Root Directory:** `frontend`
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
+- **Frontend:** Acesse a URL fornecida pela Vercel (ex: `https://seu-projeto.vercel.app`)
+- **API Backend:** Automaticamente disponível em `https://seu-projeto.vercel.app/api`
 
-4. Adicione Variável de Ambiente:
-   ```
-   VITE_API_URL=https://seu-backend.vercel.app
-   ```
+### 5. (Opcional) Configurar Domínio Personalizado
 
-5. Clique em "Deploy"
-
-### 3. Pronto! 🎉
-
-Acesse a URL do frontend fornecida pela Vercel!
+Na Vercel:
+1. Vá em Settings → Domains
+2. Adicione seu domínio customizado
 
 ---
 
